@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -21,6 +22,7 @@ public class HelloApplication extends Application {
     static StringBuffer buffer=new StringBuffer();
     static Label displaylbl=new Label("");
     static Label displayBuffer=new Label("");
+    static VBox historyBox;
     EventHandler<ActionEvent> clear=e->{
         displaylbl.setText("");
         infix.clear();
@@ -54,6 +56,8 @@ public class HelloApplication extends Application {
         displaylbl.setMinHeight(30);
         Button equalsbtn=new Button("=");
         Button clearbtn=new Button("C");
+        Label historylbl=new Label("History");
+        historylbl.setWrapText(true);
         clearbtn.setOnAction(clear);
 
         equalsbtn.setOnAction(e->{
@@ -62,8 +66,9 @@ public class HelloApplication extends Application {
                 buffer.delete(0,buffer.length());
             }
             displayBuffer.setText("");
-            System.out.println(infix.toString());
             String rt=String.valueOf(Postfix.calc(infix));
+            String hs="\n"+infix.stream().reduce("", String::concat) +" = " +rt;
+            historylbl.setText(historylbl.getText()+"\n"+hs);
             infix.clear();
             infix.add(rt);
             displaylbl.setText(infix.getFirst());
@@ -118,6 +123,8 @@ public class HelloApplication extends Application {
 
         });
         VBox viewB=new VBox(10);
+        historyBox=new VBox(10);
+        historyBox.getChildren().add(historylbl);
         viewB.setPadding(new Insets(5));
         numberGrid.setHgap(6);
         numberGrid.setVgap(4);
@@ -127,8 +134,13 @@ public class HelloApplication extends Application {
         numberGrid.addRow(3,sqrtbtn,numpad(3),numpad(2),numpad(1),operator("-"));
         numberGrid.addRow(4,yrootbtn,numpad(0),point,equalsbtn,operator("+"));
         viewB.getChildren().addAll(displaylbl,displayBuffer,numberGrid);
-        stage.setScene(new Scene(viewB));
+        HBox displayBox=new HBox(10);
+        displayBox.getChildren().addAll(viewB,historyBox);
+        stage.setMinWidth(300);
+        stage.setMaxHeight(260);
+        stage.setScene(new Scene(displayBox));
         stage.show();
+        System.out.println(stage.getHeight());
     }
 
     public static void main(String[] args) {
