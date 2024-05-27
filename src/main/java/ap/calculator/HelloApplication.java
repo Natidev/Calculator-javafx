@@ -11,7 +11,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.awt.font.TextAttribute;
 import java.io.IOException;
+import java.text.AttributedString;
 import java.util.ArrayList;
 public class HelloApplication extends Application {
     static ArrayList<String> infix=new ArrayList<>();
@@ -24,12 +26,14 @@ public class HelloApplication extends Application {
         displayBuffer.setText("");
         if(!buffer.isEmpty())buffer.delete(0,buffer.length());
     };
+    static EventHandler<ActionEvent>  refreshLbl=e->displaylbl.setText(infix.stream().reduce("", String::concat));
     public static Button numpad(int i){
         Button num=new Button(String.valueOf(i));
         num.setOnAction(e->{
             buffer.append(String.valueOf(i));
             displayBuffer.setText(buffer.toString());
         });
+        num.addEventHandler(ActionEvent.ACTION,refreshLbl);
         return num;
     }
     public static Button operator(String s){
@@ -38,8 +42,8 @@ public class HelloApplication extends Application {
             infix.add(buffer.toString());
             buffer.delete(0,buffer.length());
             infix.add(s);
-            displaylbl.setText(infix.stream().reduce("", String::concat));
             displayBuffer.setText("");
+            displaylbl.setText(infix.stream().reduce("", String::concat));
         });
         return op;
     }
@@ -75,13 +79,49 @@ public class HelloApplication extends Application {
             else if(!buffer.toString().contains("."))buffer.append(".");
             displayBuffer.setText(buffer.toString());
         });
+        Button squarebtn=new Button("x²");
+        squarebtn.setOnAction(e->{
+        infix.add(buffer.toString());
+        infix.add("^");
+        infix.add("2");
+        buffer.delete(0,buffer.length());
+        displayBuffer.setText("");
+        displaylbl.setText(infix.stream().reduce("", String::concat));
+        });
+        Button powerbtn=new Button("xʸ");
+        powerbtn.setOnAction(e->{
+            infix.add(buffer.toString());
+            infix.add("^");
+            buffer.delete(0,buffer.length());
+            displayBuffer.setText("");
+            displaylbl.setText(infix.stream().reduce("", String::concat));
+        });
+        Button sqrtbtn=new Button("²√");
+        sqrtbtn.setOnAction(e->{
+            infix.add(buffer.toString());
+            infix.add("2");
+            infix.add("√");
+            buffer.delete(0,buffer.length());
+            displayBuffer.setText("");
+            displaylbl.setText(infix.stream().reduce("", String::concat));
+        });
+        Button yrootbtn=new Button("ʸ√");
+        yrootbtn.setOnAction(e->{
+            if(!buffer.isEmpty()){
+                infix.add(buffer.toString());
+                infix.add("√");
+                buffer.delete(0,buffer.length());
+                displayBuffer.setText("");
+                displaylbl.setText(infix.stream().reduce("", String::concat));
+            }
 
+        });
         VBox viewB=new VBox(10);
-        numberGrid.addRow(0,clearbtn,operator("("),operator(")"),backbtn);
-        numberGrid.addRow(1,numpad(9),numpad(8),numpad(7),operator("/"));
-        numberGrid.addRow(2,numpad(6),numpad(5),numpad(4),operator("*"));
-        numberGrid.addRow(3,numpad(3),numpad(2),numpad(1),operator("-"));
-        numberGrid.addRow(4,equalsbtn,numpad(0),point,operator("+"));
+        numberGrid.addRow(0,squarebtn,clearbtn,operator("("),operator(")"),backbtn);
+        numberGrid.addRow(1,powerbtn,numpad(9),numpad(8),numpad(7),operator("/"));
+        numberGrid.addRow(2,operator("%"),numpad(6),numpad(5),numpad(4),operator("*"));
+        numberGrid.addRow(3,sqrtbtn,numpad(3),numpad(2),numpad(1),operator("-"));
+        numberGrid.addRow(4,yrootbtn,numpad(0),point,equalsbtn,operator("+"));
         viewB.getChildren().addAll(displaylbl,displayBuffer,numberGrid);
         stage.setScene(new Scene(viewB));
         stage.show();

@@ -51,12 +51,18 @@ public class Postfix{
         Calculate sub=(x,y)->x-y;
         Calculate mul=(x,y)->x*y;
         Calculate div=(x,y)->x/y;
+        Calculate pow= Math::pow;
+        Calculate mod=(x,y)->x%y;
+        Calculate root=(y,x)->Math.pow(x,1/y);
         Stack<String> eq=new Stack<>();
         HashMap<String,Calculate> operations=new HashMap<>();
         operations.put("+",add);
         operations.put("-",sub);
         operations.put("*",mul);
         operations.put("/",div);
+        operations.put("^",pow);
+        operations.put("%",mod);
+        operations.put("√",root);
         Stack<Double> result=new Stack<>();
         for (String str:vals){
             if(isDigit(str))result.push(Double.parseDouble(str));
@@ -72,7 +78,7 @@ public class Postfix{
         return switch (operator.charAt(0)) {
             case '+', '-' -> 1;
             case '*', '/' -> 2;
-            case '^' -> 3;
+            case '^','√' -> 3;
             default -> 0;
         };
     }
