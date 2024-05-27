@@ -3,6 +3,7 @@ package ap.calculator;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -117,6 +118,9 @@ public class HelloApplication extends Application {
 
         });
         VBox viewB=new VBox(10);
+        viewB.setPadding(new Insets(5));
+        numberGrid.setHgap(6);
+        numberGrid.setVgap(4);
         numberGrid.addRow(0,squarebtn,clearbtn,operator("("),operator(")"),backbtn);
         numberGrid.addRow(1,powerbtn,numpad(9),numpad(8),numpad(7),operator("/"));
         numberGrid.addRow(2,operator("%"),numpad(6),numpad(5),numpad(4),operator("*"));
