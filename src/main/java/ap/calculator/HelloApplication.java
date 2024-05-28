@@ -53,10 +53,12 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         GridPane numberGrid=new GridPane();
+
         displaylbl.setMinHeight(30);
         Button equalsbtn=new Button("=");
         Button clearbtn=new Button("C");
         Label historylbl=new Label("History");
+        historylbl.setStyle("-fx-background-color:#f6f6f6;");
         historylbl.setWrapText(true);
         clearbtn.setOnAction(clear);
 
@@ -125,11 +127,12 @@ public class HelloApplication extends Application {
 
         });
         VBox viewB=new VBox(10);
+        viewB.setStyle("-fx-background-color:#E6E6E6;");
         historyBox=new VBox(10);
         historyBox.getChildren().add(historylbl);
         viewB.setPadding(new Insets(5));
-        numberGrid.setHgap(6);
-        numberGrid.setVgap(4);
+        numberGrid.setHgap(3);
+        numberGrid.setVgap(3);
         numberGrid.addRow(0,squarebtn,clearbtn,operator("("),operator(")"),backbtn);
         numberGrid.addRow(1,powerbtn,numpad(9),numpad(8),numpad(7),operator("/"));
         numberGrid.addRow(2,operator("%"),numpad(6),numpad(5),numpad(4),operator("*"));
@@ -140,7 +143,8 @@ public class HelloApplication extends Application {
         displayBox.getChildren().addAll(viewB,historyBox);
         stage.setMinWidth(300);
         stage.setMaxHeight(260);
-        stage.setScene(new Scene(displayBox));
+        Scene calc=new Scene(displayBox);
+        stage.setScene(calc);
         stage.show();
     }
 
