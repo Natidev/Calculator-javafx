@@ -142,7 +142,6 @@ public class HelloApplication extends Application {
         stage.setMaxHeight(260);
         stage.setScene(new Scene(displayBox));
         stage.show();
-        System.out.println(stage.getHeight());
     }
 
     public static void main(String[] args) {

@@ -9,8 +9,8 @@ public class Postfix{
         try{
             Double.parseDouble(num);
             return true;
-        }catch(Exception e){
-            System.out.println(e.getMessage());
+        }catch(Exception ignored){
+
         }
         return false;
     }
@@ -42,7 +42,6 @@ public class Postfix{
             }
             pf.push(stack.pop());
         }
-    pf.forEach(v-> System.out.print(v+','));
         return pf;
     }
     public static double eval(Stack<String> vals){
@@ -84,16 +83,5 @@ public class Postfix{
     }
     public static double calc(ArrayList<String> a){
         return eval(infixToPostfix(a));
-    }
-
-    public static void main(String[] args) {
-        String infixExpression = "a + b * (c - d) / e";
-        try {
-           // String postfixExpression = infixToPostfix(infixExpression);
-            System.out.println("Infix: " + infixExpression);
-            //System.out.println("Postfix: " + postfixExpression);
-        } catch (IllegalArgumentException e) {
-            System.err.println("Error: " + e.getMessage());
-        }
     }
 }
