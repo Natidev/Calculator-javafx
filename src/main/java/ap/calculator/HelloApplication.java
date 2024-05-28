@@ -70,8 +70,10 @@ public class HelloApplication extends Application {
             String hs="\n"+infix.stream().reduce("", String::concat) +" = " +rt;
             historylbl.setText(historylbl.getText()+"\n"+hs);
             infix.clear();
-            infix.add(rt);
-            displaylbl.setText(infix.getFirst());
+            buffer.append(rt);
+
+            displayBuffer.setText(buffer.toString());
+            displaylbl.setText("");
         });
 
         Button backbtn=new Button("del");
